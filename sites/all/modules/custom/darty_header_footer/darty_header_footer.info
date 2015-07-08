@@ -1,0 +1,4 @@
+name = Darty Header Footer
+core = 7.x
+package = Darty
+project = darty_header_footer

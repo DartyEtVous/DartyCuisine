@@ -1,0 +1,45 @@
+<?php
+
+/**
+ * @file
+ * Code for the Darty header footer feature.
+ */
+
+/**
+ * Implementation of hook_page_alter()
+ *
+ */
+function darty_header_footer_page_alter(&$page) {
+  
+  global $conf;
+  $cid = 'json_darty_header_footer';
+  
+  //Add header, footer, css and js from Darty Json services
+  if ( !path_is_admin(current_path()) ) {
+    
+    $cache = cache_get($cid);
+    if ( $cache && $cache->expire > time() ) {
+      $data_encode = $cache->data;
+    } else {
+      if (isset($conf['darty_header_htaccess'])) {
+        $url = $conf['darty_header_protocol'] . $conf['darty_header_htaccess'] . '@' . $conf['darty_header_url'] . '/nav/extra/header_json?no_seo_footer';
+      } else {
+        $url = $conf['darty_header_protocol'] . $conf['darty_header_url'] . '/nav/extra/header_json?no_seo_footer';
+      }
+      $request = drupal_http_request($url);
+      $data_encode = $request->data;
+      cache_clear_all($cid, 'cache');
+      cache_set($cid, $data_encode, 'cache', time() + 300);
+    }
+    $data = drupal_json_decode($data_encode);
+    $page['header'][] = array('#markup' => $data['header']);
+    $page['footer'][] = array('#markup' => $data['footer']);
+
+    foreach ($data['css'] as $css) {
+      drupal_add_css($css, 'external');
+    }
+    foreach ($data['js'] as $js) {
+      drupal_add_js($js, array('type' => 'external', 'scope' => 'footer'));
+    }
+  }
+}
