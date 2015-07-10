@@ -1,0 +1,4 @@
+name = Gestion de formulaire
+core = 7.x
+package = Darty
+project = darty_form_traitement

@@ -1,0 +1,5 @@
+name = Produit en attente de publication
+description = Ajout de bouton 'en attente' dans le type de contenu
+core = 7.x
+files[] = darty_brouillon.module
+package = Darty
