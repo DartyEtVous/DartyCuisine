@@ -9,54 +9,119 @@
  * ***************** hook_form_alter ****************************
  */
 function darty_form_modify_form_alter(&$form, &$form_state, $form_id) {
-    
-    //dpm($form_id);
-    
-    switch($form_id) {
-        
-        /****** Alteration deu formulaire fiche produit ******/
-        case 'fiche_produit_node_form':
-            
-            /**** Nom de produit ****/
-            $form['title']['#prefix'] = '<div class="nomProduit">';
-            $form['title']['#suffix'] = '</div>';
-            $form['title']['#title'] = 'Nom de la cuisine';
-            $form['title']['#maxlength'] = 40;
-            $form['title']['#description'] = "40 caractères maximum";
-            
-            /**** Texte explicatif ****/
-            $form['field_texte_explicatif']['und']['0']['field_intro_titre']['und']['0']['value']['#prefix'] = '<div class="titreExplicatif">';
-            $form['field_texte_explicatif']['und']['0']['field_intro_titre']['und']['0']['value']['#suffix'] = '</div>';
-            $form['field_texte_explicatif']['und']['0']['field_intro_titre']['und']['0']['value']['#title'] = "Titre";
-            
-            
-            $form['field_texte_explicatif']['und']['0']['field_texte_formater']['und']['0']['value']['#prefix'] = '<div class="texteExplicatif">';
-            $form['field_texte_explicatif']['und']['0']['field_texte_formater']['und']['0']['value']['#suffix'] = '</div>';
-            $form['field_texte_explicatif']['und']['0']['field_texte_formater']['und']['0']['value']['#title'] = "Contenu du texte explicatif";
-            
-            
-            break;
-        
-        
-        case 'article_node_form':
 
-            /*$form['actions']['draft'] = array(
-                '#type' => 'submit',
-                '#value' => t('Save draft'),
-                '#weight' => '9',
-                '#submit' => array('__save_draft_submit'),
-                '#validate' => array('__save_draft_validate'),
-                '#attributes' => array(
-                    'class' => array('cancel'), // add the class cancel will skip any clientside validation
-                ),
-                //'limit_validation_errors' => array(), // this should be enough to skip validation however does not work for me
-            );*/
+//dpm($form_id);
+ //$path = drupal_get_path('module', 'darty_form_modify');
+ //$path = drupal_get_path('theme', $GLOBALS['theme']); // Current active theme
+ $path = drupal_get_path('theme', variable_get('theme_default', NULL));
+ dpm($path);
+ 
+  switch($form_id) {   
+    /****** Alteration deu formulaire fiche produit ******/
+    case 'fiche_produit_node_form':
+      
+      drupal_add_js($path . '/js/interact/dropzones.js');
+      drupal_add_js($path . '/js/interact/interact.js');
+      drupal_add_css($path . 'css/bo-overide.css');
+        
+      /**** Nom de produit ****/
+      $form['title']['#prefix'] = '<div class="nomProduit">';
+      $form['title']['#suffix'] = '</div>';
+      $form['title']['#title'] = 'Nom de la cuisine';
+      $form['title']['#maxlength'] = 40;
+      $form['title']['#description'] = "40 caractères maximum";
+            
+      /**** Texte explicatif ****/
+      $form['field_texte_explicatif']['und']['0']['field_intro_titre']['und']['0']['value']['#prefix'] = '<div class="titreExplicatif">';
+      $form['field_texte_explicatif']['und']['0']['field_intro_titre']['und']['0']['value']['#suffix'] = '</div>';
+      $form['field_texte_explicatif']['und']['0']['field_intro_titre']['und']['0']['value']['#title'] = "Titre";
+            
+            
+      $form['field_texte_explicatif']['und']['0']['field_texte_formater']['und']['0']['value']['#prefix'] = '<div class="texteExplicatif">';
+      $form['field_texte_explicatif']['und']['0']['field_texte_formater']['und']['0']['value']['#suffix'] = '</div>';
+      $form['field_texte_explicatif']['und']['0']['field_texte_formater']['und']['0']['value']['#title'] = "Contenu du texte explicatif";
+            
+      /****** Image *****/
+      $form['field_image_principale']['#prefix'] = '<div class="imagePrincipal">';
+      $form['field_image_principale']['#suffix'] = '<div class="dropzone-wrapper">
+                                                    <div id="drop1" class="dropzone js-drop"> </div>
+                                                    </div>
+                                                    <div id="drag1" class="draggable js-drag" onmouseout="sortic();">Position zoom 1</div>
+                                                    <div id="drag2" class="draggable js-drag" onmouseout="sortic();">Position zoom 2</div>
+                                                    <div id="drag3" class="draggable js-drag" onmouseout="sortic();">Position zoom 3</div>
+                                                    <div id="drag4" class="draggable js-drag" onmouseout="sortic();">Position zoom 4</div>
+                                                    <div id="drag5" class="draggable js-drag" onmouseout="sortic();">Position zoom 5</div>'
+                                                    . '</div>';
+            
+        
+            
+        break;
+        
+        
+    case 'article_node_form':
 
-            break;
+    /*$form['actions']['draft'] = array(
+        '#type' => 'submit',
+        '#value' => t('Save draft'),
+        '#weight' => '9',
+        '#submit' => array('__save_draft_submit'),
+        '#validate' => array('__save_draft_validate'),
+        '#attributes' => array(
+            'class' => array('cancel'), // add the class cancel will skip any clientside validation
+        ),
+        //'limit_validation_errors' => array(), // this should be enough to skip validation however does not work for me
+    );*/
+
+      break;
     }
     
-   
 }
+
+
+//function darty_form_modify_preprocess_node(&$variables){
+//    
+//    switch($variables['type']) {
+//        case 'fiche_produit':
+//            //$variables['content']['body'][0]['#markup']  = 'tes-' ;
+//            drupal_add_js(drupal_get_path('theme', 'mytheme') . '/mytheme.js');
+//            $vars['scripts'] = drupal_get_js(); // necessary in D7?
+//    
+//            break;
+//    }
+//  /*if ($variables['type']== 'fiche_produit'){ 
+//    $variables['content']['body'][0]['#markup']  = 'tes-' ;
+//  }*///fin if
+//}//fin function
+
+
+/*
+function darty_form_modify_field_widget_form_alter(&$element, &$form_state, $context) {
+  // If this is an image field type
+  if ($context['field']['type'] == 'image') {
+    // Loop through the element children (there will always be at least one).
+    foreach (element_children($element) as $key => $child) {
+      // Add the new process function to the element
+        //dpm($element);
+      $element[$key]['#process'][] = 'darty_form_modify_image_field_widget_process';
+    }
+  }
+}
+
+function darty_form_modify_image_field_widget_process($element, &$form_state, $form) {
+  // Change the title field to a textarea
+  //$element['title']['#type'] = 'textarea';
+    //$element['title'] = array('#type' => 'textfield');
+    $element['alt']['#title'] = 'Effect';
+//     if ($element['alt']['#access']) {
+//    // Use $element['alt']['#title'] for the title.
+//    // Use $element['alt']['#description'] for the description.
+//    }
+  
+
+  // Return the altered element
+  return $element;
+}*/
+
 
 /*
 function __save_draft_validate($form, &$form_state) {
