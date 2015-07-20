@@ -1,0 +1,78 @@
+<?php
+
+/**
+ * @file
+ * Code for the darty_form_modify
+ */
+
+/*
+ * ***************** hook_form_alter ****************************
+ */
+function darty_form_modify_form_alter(&$form, &$form_state, $form_id) {
+    
+    //dpm($form_id);
+    
+    switch($form_id) {
+        
+        /****** Alteration deu formulaire fiche produit ******/
+        case 'fiche_produit_node_form':
+            
+            /**** Nom de produit ****/
+            $form['title']['#prefix'] = '<div class="nomProduit">';
+            $form['title']['#suffix'] = '</div>';
+            $form['title']['#title'] = 'Nom de la cuisine';
+            $form['title']['#maxlength'] = 40;
+            $form['title']['#description'] = "40 caractères maximum";
+            
+            /**** Texte explicatif ****/
+            $form['field_texte_explicatif']['und']['0']['field_intro_titre']['und']['0']['value']['#prefix'] = '<div class="titreExplicatif">';
+            $form['field_texte_explicatif']['und']['0']['field_intro_titre']['und']['0']['value']['#suffix'] = '</div>';
+            $form['field_texte_explicatif']['und']['0']['field_intro_titre']['und']['0']['value']['#title'] = "Titre";
+            
+            
+            $form['field_texte_explicatif']['und']['0']['field_texte_formater']['und']['0']['value']['#prefix'] = '<div class="texteExplicatif">';
+            $form['field_texte_explicatif']['und']['0']['field_texte_formater']['und']['0']['value']['#suffix'] = '</div>';
+            $form['field_texte_explicatif']['und']['0']['field_texte_formater']['und']['0']['value']['#title'] = "Contenu du texte explicatif";
+            
+            
+            break;
+        
+        
+        case 'article_node_form':
+
+            /*$form['actions']['draft'] = array(
+                '#type' => 'submit',
+                '#value' => t('Save draft'),
+                '#weight' => '9',
+                '#submit' => array('__save_draft_submit'),
+                '#validate' => array('__save_draft_validate'),
+                '#attributes' => array(
+                    'class' => array('cancel'), // add the class cancel will skip any clientside validation
+                ),
+                //'limit_validation_errors' => array(), // this should be enough to skip validation however does not work for me
+            );*/
+
+            break;
+    }
+    
+   
+}
+
+/*
+function __save_draft_validate($form, &$form_state) {
+    // Set as unpublished.
+    $form_state['values']['status'] = 0;
+    // Force validation.
+    $errors = &drupal_static('form_set_error', NULL, TRUE);
+
+}
+
+function __save_draft_submit($form, &$form_state) {
+    // clear error messsages
+    drupal_get_messages();
+    // save the node
+    node_form_submit($form, $form_state);
+    $form_state['redirect'] = 'node/'.$form_state['nid'].'/edit';
+}
+ * 
+ */
