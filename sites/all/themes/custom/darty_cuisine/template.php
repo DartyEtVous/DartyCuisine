@@ -6,6 +6,24 @@
  * Complete documentation for this file is available online.
  * @see https://drupal.org/node/1728096
  */
+/*
+function darty_cuisine_preprocess_file_entity(&$variables) {
+  if ($variables['type'] == 'image') {
+
+    // Alt Text
+    if (!empty($variables['field_media_alt_text'])) {
+      $variables['content']['file']['#alt'] = $variables['field_media_alt_text']['und'][0]['safe_value'];
+    }
+
+    // Title
+    if (!empty($variables['field_media_title'])) {
+      $variables['content']['file']['#title'] = $variables['field_media_title']['und'][0]['safe_value'];
+    }
+  }
+}
+ * 
+ */
+
 
 
 /**
